@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModalBtn = document.getElementById('close-modal-btn');
     const ganttChartCanvas = document.getElementById('gantt-chart');
     const chartLegend = document.getElementById('chart-legend');
+    const resetBtn = document.getElementById('reset-btn');
     
     // Controles Globales
     const startAllBtn = document.getElementById('start-all-btn');
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stopAllBtn = document.getElementById('stop-all-btn');
     
     let allProcesses = {};
-    const MAX_PROCESSES = 15;
+    const MAX_PROCESSES = 10;
     let chartUpdateInterval = null;
 
     // --- Funciones de la Interfaz ---
@@ -54,14 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             processContainer.appendChild(card);
 
-            // --- CORRECCIÓN: Lógica del menú para evitar que se oculte ---
             const menuBtn = card.querySelector('.action-menu-btn');
             const menu = card.querySelector('.action-menu');
             menuBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Evita que el click se propague al documento
+                e.stopPropagation();
                 const isVisible = menu.style.display === 'block';
                 
-                // Cierra todos los otros menús
                 document.querySelectorAll('.action-menu').forEach(m => m.style.display = 'none');
                 document.querySelectorAll('.process-card').forEach(c => c.classList.remove('is-active'));
                 
@@ -77,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.querySelector('.stop-btn').addEventListener('click', () => socket.emit('stop_process', { id: process.id }));
         }
 
-        // Actualizar datos
         const percentage = process.tiempo_total > 0 ? (process.tiempo_ejecutado / process.tiempo_total) * 100 : 0;
         const progressBar = card.querySelector('.progress-bar');
         
@@ -94,8 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const menu = card.querySelector('.action-menu');
-        if (process.estado !== 'Nuevo') {
-            menu.querySelector('.start-btn').disabled = true;
+        if (menu && process.estado !== 'Nuevo') {
+            const startBtn = menu.querySelector('.start-btn');
+            if(startBtn) startBtn.disabled = true;
         }
     };
 
@@ -112,7 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('update_process', (process) => {
         allProcesses[process.id] = process;
         createOrUpdateProcessCard(process);
-        addProcessBtn.disabled = Object.keys(allProcesses).length >= MAX_PROCESSES;
+        
+        const numProcesses = Object.keys(allProcesses).length;
+        if (numProcesses >= MAX_PROCESSES) {
+            addProcessBtn.style.display = 'none';
+            resetBtn.style.display = 'inline-block';
+        }
     });
     
     socket.on('finalize_process', (process) => {
@@ -120,8 +124,16 @@ document.addEventListener('DOMContentLoaded', () => {
         finalizeProcessCard(process);
     });
 
+    socket.on('reset_ui', () => {
+        processContainer.innerHTML = '';
+        allProcesses = {};
+        addProcessBtn.style.display = 'inline-block';
+        resetBtn.style.display = 'none';
+    });
+
     // --- Listeners Globales ---
     addProcessBtn.addEventListener('click', () => socket.emit('add_process'));
+    resetBtn.addEventListener('click', () => socket.emit('reset_all'));
     startAllBtn.addEventListener('click', () => socket.emit('start_all'));
     blockAllBtn.addEventListener('click', () => socket.emit('block_all'));
     unblockAllBtn.addEventListener('click', () => socket.emit('unblock_all'));
@@ -134,35 +146,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica del Modal y la Gráfica ---
     showChartBtn.addEventListener('click', () => {
         chartModal.style.display = 'flex';
-        // Inicia el bucle de actualización solo cuando el modal está abierto
         if (chartUpdateInterval) clearInterval(chartUpdateInterval);
         chartUpdateInterval = setInterval(drawGanttChart, 1000);
-        drawGanttChart(); // Dibuja inmediatamente
+        drawGanttChart();
     });
 
     const closeModal = () => {
         chartModal.style.display = 'none';
-        // Detiene el bucle de actualización al cerrar
         clearInterval(chartUpdateInterval);
         chartUpdateInterval = null;
     };
 
     closeModalBtn.addEventListener('click', closeModal);
     chartModal.addEventListener('click', (e) => {
-        if (e.target === chartModal) {
-            closeModal();
-        }
+        if (e.target === chartModal) closeModal();
     });
 
-    // --- CORRECCIÓN: Lógica completa para dibujar la gráfica de Gantt ---
     function drawGanttChart() {
         const ctx = ganttChartCanvas.getContext('2d');
         const processes = Object.values(allProcesses);
         
-        // Ajustar el tamaño del canvas al contenedor
         const container = ganttChartCanvas.parentElement;
         ganttChartCanvas.width = container.clientWidth;
-        ganttChartCanvas.height = container.clientHeight - 50; // Espacio para la leyenda
+        ganttChartCanvas.height = container.clientHeight - 50;
         
         ctx.clearRect(0, 0, ganttChartCanvas.width, ganttChartCanvas.height);
         
@@ -189,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const pixelsPerSecond = (ganttChartCanvas.width - PADDING_X - 20) / totalDuration;
 
-        // Eje Y y etiquetas de procesos
         processes.forEach((proc, i) => {
             const yBase = PADDING_Y + i * ROW_HEIGHT;
             ctx.fillStyle = '#333';
@@ -198,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText(`Proceso ${proc.id}`, PADDING_X - 10, yBase + ROW_HEIGHT / 2 + 4);
         });
 
-        // Eje X y marcas de tiempo
         const tickInterval = totalDuration <= 30 ? 2 : totalDuration <= 120 ? 10 : 30;
         for (let t = 0; t <= totalDuration; t += tickInterval) {
             const x = PADDING_X + t * pixelsPerSecond;
@@ -213,10 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText(`${t}s`, x, PADDING_Y - 15);
         }
 
-        // Dibujar las líneas de tiempo
         processes.forEach((proc, i) => {
             const yBase = PADDING_Y + i * ROW_HEIGHT;
-
             for (let j = 0; j < proc.history.length; j++) {
                 const [ts, state] = proc.history[j];
                 const startX = PADDING_X + (ts - startTime) * pixelsPerSecond;
@@ -240,13 +242,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         ctx.moveTo(startX, yBase + ROW_HEIGHT / 2);
                         ctx.lineTo(endX, yBase + ROW_HEIGHT / 2);
                         ctx.stroke();
-                        ctx.setLineDash([]); // Reset dash
+                        ctx.setLineDash([]);
                         break;
                 }
             }
         });
 
-        // Leyenda
         chartLegend.innerHTML = `
             <div class="legend-item"><div class="legend-color" style="background: #00F260;"></div> En Ejecución</div>
             <div class="legend-item"><div class="legend-color" style="background: #FF512F; height: 6px; margin-top: 2px;"></div> Bloqueado</div>
