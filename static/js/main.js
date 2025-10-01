@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io();
 
-    // --- Elementos del DOM ---
     const processContainer = document.getElementById('process-container');
     const addProcessBtn = document.getElementById('add-process-btn');
     const showChartBtn = document.getElementById('show-chart-btn');
@@ -11,17 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const chartLegend = document.getElementById('chart-legend');
     const resetBtn = document.getElementById('reset-btn');
     
-    // Controles Globales
     const startAllBtn = document.getElementById('start-all-btn');
-    const blockAllBtn = document.getElementById('block-all-btn');
-    const unblockAllBtn = document.getElementById('unblock-all-btn');
-    const stopAllBtn = document.getElementById('stop-all-btn');
-    
+    // --- CORRECCIÓN: Eliminadas las referencias a los botones que no funcionaban ---
+
     let allProcesses = {};
     const MAX_PROCESSES = 10;
     let chartUpdateInterval = null;
 
-    // --- Funciones de la Interfaz ---
     const createOrUpdateProcessCard = (process) => {
         let card = document.getElementById(`process-${process.id}`);
         if (!card) {
@@ -60,10 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
             menuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const isVisible = menu.style.display === 'block';
-                
                 document.querySelectorAll('.action-menu').forEach(m => m.style.display = 'none');
                 document.querySelectorAll('.process-card').forEach(c => c.classList.remove('is-active'));
-                
                 if (!isVisible) {
                     menu.style.display = 'block';
                     card.classList.add('is-active');
@@ -107,11 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Listeners de Socket.IO ---
     socket.on('update_process', (process) => {
         allProcesses[process.id] = process;
         createOrUpdateProcessCard(process);
-        
         const numProcesses = Object.keys(allProcesses).length;
         if (numProcesses >= MAX_PROCESSES) {
             addProcessBtn.style.display = 'none';
@@ -131,19 +122,16 @@ document.addEventListener('DOMContentLoaded', () => {
         resetBtn.style.display = 'none';
     });
 
-    // --- Listeners Globales ---
     addProcessBtn.addEventListener('click', () => socket.emit('add_process'));
     resetBtn.addEventListener('click', () => socket.emit('reset_all'));
     startAllBtn.addEventListener('click', () => socket.emit('start_all'));
-    blockAllBtn.addEventListener('click', () => socket.emit('block_all'));
-    unblockAllBtn.addEventListener('click', () => socket.emit('unblock_all'));
-    stopAllBtn.addEventListener('click', () => socket.emit('stop_all'));
+    // --- CORRECCIÓN: Eliminados los event listeners de los botones que no funcionaban ---
+    
     document.addEventListener('click', () => {
         document.querySelectorAll('.action-menu').forEach(m => m.style.display = 'none');
         document.querySelectorAll('.process-card').forEach(c => c.classList.remove('is-active'));
     });
     
-    // --- Lógica del Modal y la Gráfica ---
     showChartBtn.addEventListener('click', () => {
         chartModal.style.display = 'flex';
         if (chartUpdateInterval) clearInterval(chartUpdateInterval);
@@ -163,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function drawGanttChart() {
+        // ... (La lógica de la gráfica no necesita cambios) ...
         const ctx = ganttChartCanvas.getContext('2d');
         const processes = Object.values(allProcesses);
         
@@ -255,4 +244,3 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 });
-

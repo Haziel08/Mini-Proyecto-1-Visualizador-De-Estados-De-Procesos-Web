@@ -17,23 +17,18 @@
             <div class="main-controls">
                 <button id="add-process-btn" class="control-btn add-btn">+ Agregar Proceso</button>
                 <button id="show-chart-btn" class="control-btn chart-btn">📊 Ver Gráfica</button>
-                <!-- CORRECCIÓN: Botón de Reinicio añadido -->
                 <button id="reset-btn" class="control-btn reset-btn" style="display: none;">🔄 Reiniciar Simulación</button>
             </div>
+            <!-- CORRECCIÓN: Eliminado el panel de botones que no funcionaban, dejando solo el que sí -->
             <div class="global-controls">
                 <button id="start-all-btn" class="global-btn start">▶ Iniciar Todos</button>
-                <button id="block-all-btn" class="global-btn block">⏸ Bloquear Activos</button>
-                <button id="unblock-all-btn" class="global-btn unblock">▶ Desbloquear Todos</button>
-                <button id="stop-all-btn" class="global-btn stop">⏹ Detener Todos</button>
             </div>
         </header>
 
         <main id="process-container">
-            <!-- Las tarjetas de procesos se insertarán aquí dinámicamente -->
         </main>
     </div>
 
-    <!-- Modal para la Gráfica -->
     <div id="chart-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="close-modal-btn" class="close-btn">&times;</button>
@@ -47,4 +42,3 @@
     <script src="/static/js/main.js"></script>
 </body>
 </html>
-

@@ -47,23 +47,11 @@ def handle_stop_process(data):
     pid = data.get('id')
     if pid: mi_planificador.detener_proceso_por_id(pid)
 
+# --- CORRECCIÓN: Eliminados los manejadores para los botones globales que no funcionaban ---
 @socketio.on('start_all')
 def handle_start_all():
     mi_planificador.iniciar_todos()
 
-@socketio.on('block_all')
-def handle_block_all():
-    mi_planificador.bloquear_todos_activos()
-
-@socketio.on('unblock_all')
-def handle_unblock_all():
-    mi_planificador.desbloquear_todos_bloqueados()
-
-@socketio.on('stop_all')
-def handle_stop_all():
-    mi_planificador.detener_todos_activos()
-
-# --- CORRECCIÓN: Añadido el manejador para el evento de reinicio ---
 @socketio.on('reset_all')
 def handle_reset_all():
     mi_planificador.reiniciar()
@@ -71,4 +59,3 @@ def handle_reset_all():
 if __name__ == '__main__':
     print("Iniciando servidor en http://127.0.0.1:5000")
     socketio.run(app, host='127.0.0.1', port=5000)
-
