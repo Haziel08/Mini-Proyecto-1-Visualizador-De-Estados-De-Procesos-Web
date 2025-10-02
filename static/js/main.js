@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io();
+    // Conexión correcta a SocketIO para producción
+    const socket = io(window.location.origin, { transports: ['websocket', 'polling'] });
 
     const processContainer = document.getElementById('process-container');
     const addProcessBtn = document.getElementById('add-process-btn');
@@ -9,14 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const ganttChartCanvas = document.getElementById('gantt-chart');
     const chartLegend = document.getElementById('chart-legend');
     const resetBtn = document.getElementById('reset-btn');
-    
     const startAllBtn = document.getElementById('start-all-btn');
-    // --- CORRECCIÓN: Eliminadas las referencias a los botones que no funcionaban ---
 
     let allProcesses = {};
     const MAX_PROCESSES = 10;
     let chartUpdateInterval = null;
 
+    // --- Función para crear o actualizar tarjeta de proceso ---
     const createOrUpdateProcessCard = (process) => {
         let card = document.getElementById(`process-${process.id}`);
         if (!card) {
@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             processContainer.appendChild(card);
 
+            // Abrir/cerrar menú de acciones
             const menuBtn = card.querySelector('.action-menu-btn');
             const menu = card.querySelector('.action-menu');
             menuBtn.addEventListener('click', (e) => {
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // Botones de acción por proceso
             card.querySelector('.start-btn').addEventListener('click', () => socket.emit('start_process', { id: process.id }));
             card.querySelector('.block-btn').addEventListener('click', () => socket.emit('block_process', { id: process.id }));
             card.querySelector('.unblock-btn').addEventListener('click', () => socket.emit('unblock_process', { id: process.id }));
@@ -78,11 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
         card.querySelector('.percentage').textContent = `${Math.min(percentage, 100).toFixed(0)}%`;
 
         progressBar.classList.remove('blocked', 'finalized');
-        if (process.estado === 'Bloqueado') {
-            progressBar.classList.add('blocked');
-        } else if (process.estado === 'Finalizado' || process.estado === 'Detenido') {
-            progressBar.classList.add('finalized');
-        }
+        if (process.estado === 'Bloqueado') progressBar.classList.add('blocked');
+        else if (process.estado === 'Finalizado' || process.estado === 'Detenido') progressBar.classList.add('finalized');
 
         const menu = card.querySelector('.action-menu');
         if (menu && process.estado !== 'Nuevo') {
@@ -100,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- SocketIO listeners ---
     socket.on('update_process', (process) => {
         allProcesses[process.id] = process;
         createOrUpdateProcessCard(process);
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resetBtn.style.display = 'inline-block';
         }
     });
-    
+
     socket.on('finalize_process', (process) => {
         allProcesses[process.id] = process;
         finalizeProcessCard(process);
@@ -122,16 +122,16 @@ document.addEventListener('DOMContentLoaded', () => {
         resetBtn.style.display = 'none';
     });
 
+    // --- Event listeners botones ---
     addProcessBtn.addEventListener('click', () => socket.emit('add_process'));
     resetBtn.addEventListener('click', () => socket.emit('reset_all'));
     startAllBtn.addEventListener('click', () => socket.emit('start_all'));
-    // --- CORRECCIÓN: Eliminados los event listeners de los botones que no funcionaban ---
-    
+
     document.addEventListener('click', () => {
         document.querySelectorAll('.action-menu').forEach(m => m.style.display = 'none');
         document.querySelectorAll('.process-card').forEach(c => c.classList.remove('is-active'));
     });
-    
+
     showChartBtn.addEventListener('click', () => {
         chartModal.style.display = 'flex';
         if (chartUpdateInterval) clearInterval(chartUpdateInterval);
@@ -150,17 +150,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === chartModal) closeModal();
     });
 
+    // --- Función para dibujar Gantt ---
     function drawGanttChart() {
-        // ... (La lógica de la gráfica no necesita cambios) ...
         const ctx = ganttChartCanvas.getContext('2d');
         const processes = Object.values(allProcesses);
-        
         const container = ganttChartCanvas.parentElement;
         ganttChartCanvas.width = container.clientWidth;
         ganttChartCanvas.height = container.clientHeight - 50;
-        
         ctx.clearRect(0, 0, ganttChartCanvas.width, ganttChartCanvas.height);
-        
+
         if (processes.length === 0 || !processes.some(p => p.history.length > 1)) {
             ctx.fillStyle = '#666';
             ctx.font = '16px Poppins';
@@ -214,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const endTs = (j + 1 < proc.history.length) ? proc.history[j + 1][0] : endTime;
                 const endX = PADDING_X + (endTs - startTime) * pixelsPerSecond;
                 
-                switch (state) {
+                                switch (state) {
                     case 'En Ejecución':
                         ctx.fillStyle = '#00F260';
                         ctx.fillRect(startX, yBase + 5, endX - startX, ROW_HEIGHT - 10);
@@ -244,3 +242,4 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 });
+
