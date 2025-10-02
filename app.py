@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 from logic import Planificador
@@ -56,6 +57,5 @@ def handle_start_all():
 def handle_reset_all():
     mi_planificador.reiniciar()
 
-if __name__ == '__main__':
-    print("Iniciando servidor en http://127.0.0.1:5000")
-    socketio.run(app, host='127.0.0.1', port=5000)
+if __name__ == "__main__":
+    socketio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
