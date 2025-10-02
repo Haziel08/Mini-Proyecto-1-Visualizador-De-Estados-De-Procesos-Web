@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Conexión correcta a SocketIO para producción
-    const socket = io(window.location.origin, { transports: ['websocket', 'polling'] });
+    const socket = io("https://mini-proyecto-1-visualizador-de-estados-rvrf.onrender.com", {
+        transports: ['websocket'],
+        upgrade: false
+    });
+
 
     const processContainer = document.getElementById('process-container');
     const addProcessBtn = document.getElementById('add-process-btn');
