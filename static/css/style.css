@@ -1,65 +1,76 @@
-/* Reset and Base Styles */
+/* -------------------------
+   RESET Y ESTILOS BASE
+   Propósito: normalizar márgenes y comportamiento de caja
+   -------------------------*/
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;               /* Elimina márgenes por defecto del navegador */
+    padding: 0;              /* Elimina padding por defecto del navegador */
+    box-sizing: border-box;  /* Hace que width incluya padding y border */
 }
 
+/* Estilos globales del <body> */
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #4A00E0, #8E2DE2);
-    color: #fff;
-    overflow-x: hidden;
-    min-height: 100vh;
+    font-family: 'Poppins', sans-serif; /* Fuente principal cargada desde Google Fonts */
+    background: linear-gradient(135deg, #4A00E0, #8E2DE2); /* Degradado diagonal de fondo */
+    color: #fff;               /* Color de texto por defecto (contraste sobre el fondo) */
+    overflow-x: hidden;        /* Evita scroll horizontal indeseado */
+    min-height: 100vh;         /* Asegura que el body ocupe al menos la altura de la ventana */
 }
 
-/* Main Container and Header */
+/* -------------------------
+   CONTENEDOR PRINCIPAL Y HEADER
+   -------------------------*/
 .main-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: 900px; /* Ancho máximo del layout central */
+    margin: 0 auto;   /* Centra horizontalmente el contenedor */
+    padding: 2rem;    /* Espacio interior alrededor del contenido */
 }
 
 header {
-    text-align: center;
-    margin-bottom: 2rem;
+    text-align: center; /* Centra el texto del header */
+    margin-bottom: 2rem;/* Separación inferior respecto al contenido siguiente */
 }
 
 header h1 {
-    font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-weight: 700;                              /* Negrita fuerte para el título */
+    font-size: 2.5rem;                             /* Tamaño grande para jerarquía */
+    margin-bottom: 1.5rem;                         /* Separación debajo del título */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);    /* Sombra sutil para legibilidad sobre degradado */
 }
 
+/* Contenedores de botones en el header */
 .main-controls, .global-controls {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+    display: flex;           /* Layout horizontal flexible */
+    justify-content: center; /* Centra elementos dentro del contenedor */
+    gap: 1rem;               /* Espacio entre botones */
+    margin-bottom: 1rem;     /* Separación inferior */
+    flex-wrap: wrap;         /* Permite que los botones bajen de línea en pantallas pequeñas */
 }
 
+/* Estilos comunes a botones de control */
 .control-btn, .global-btn {
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 0.8rem 1.5rem;               /* Relleno interno para tamaño cómodo */
+    border: none;                         /* Sin borde por defecto */
+    border-radius: 50px;                  /* Botones con forma pill */
+    font-family: 'Poppins', sans-serif;   /* Consistencia tipográfica */
+    font-weight: 600;                     /* Legible y con peso */
+    font-size: 1rem;                      /* Tamaño de letra estándar */
+    cursor: pointer;                      /* Indicador de clic */
+    transition: all 0.3s ease;            /* Transición suave para hover/transform */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra ligera para profundidad */
 }
 
-.add-btn { background-color: #00F260; color: #111; }
-.add-btn:hover { background-color: #00D455; transform: translateY(-3px); }
-.add-btn:disabled { background-color: #555; color: #999; cursor: not-allowed; transform: none; }
+/* Botón Agregar */
+.add-btn { background-color: #00F260; color: #111; } /* Verde llamativo, texto oscuro */
+.add-btn:hover { background-color: #00D455; transform: translateY(-3px); } /* Efecto hover: subir y oscurecer */
+.add-btn:disabled { background-color: #555; color: #999; cursor: not-allowed; transform: none; } /* Estado deshabilitado */
 
+/* Botón Gráfica */
 .chart-btn { background-color: #7F00FF; color: white; }
 .chart-btn:hover { background-color: #9933FF; transform: translateY(-3px); }
 
-.global-btn { font-size: 0.8rem; padding: 0.6rem 1.2rem; }
+/* Botones globales (inicio, bloqueo, paro, etc.) */
+.global-btn { font-size: 0.8rem; padding: 0.6rem 1.2rem; } /* Tamaño ligeramente más compacto */
 .global-btn.start { background-color: #2E7D32; color: white; }
 .global-btn.start:hover { background-color: #388E3C; }
 .global-btn.block { background-color: #F57C00; color: white; }
@@ -69,94 +80,108 @@ header h1 {
 .global-btn.stop { background-color: #D32F2F; color: white; }
 .global-btn.stop:hover { background-color: #F44336; }
 
-
-/* Process Card Styles (Glassmorphism) */
+/* -------------------------
+   TARJETAS DE PROCESO (Glassmorphism)
+   -------------------------*/
 #process-container {
-    display: grid;
-    gap: 1.5rem;
+    display: grid;  /* Grid permite apilar tarjetas con gap */
+    gap: 1.5rem;    /* Separación entre tarjetas */
 }
 
 .process-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    /* --- CORRECCIÓN: Se establece un contexto de apilamiento --- */
-    position: relative;
-    z-index: 1;
+    background: rgba(255, 255, 255, 0.1);          /* Fondo translúcido para efecto glass */
+    border-radius: 15px;                           /* Bordes redondeados */
+    padding: 1.5rem;                               /* Espacio interior */
+    border: 1px solid rgba(255, 255, 255, 0.2);    /* Borde sutil para definición */
+    backdrop-filter: blur(10px);                   /* Difumina el fondo detrás de la tarjeta */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);   /* Sombra profunda para separación visual */
+    transition: all 0.3s ease;                     /* Transición suave al cambiar estados */
+    position: relative;                            /* Crea contexto para elementos posicionado dentro */
+    z-index: 1;                                    /* Establece orden de apilamiento base */
 }
 
-/* --- CORRECCIÓN: La tarjeta activa se pone encima de las demás --- */
+/* Tarjeta activa se eleva sobre las demás */
 .process-card.is-active {
-    z-index: 100;
+    z-index: 100; /* Asegura que la tarjeta activa quede encima de otras y de menús emergentes */
 }
 
+/* Tarjeta finalizada con color distinto */
 .process-card.finalized {
-    background: rgba(0, 77, 37, 0.5);
-    border-color: rgba(76, 175, 80, 0.5);
+    background: rgba(0, 77, 37, 0.5);               /* Verde oscuro translúcido */
+    border-color: rgba(76, 175, 80, 0.5);           /* Borde acorde al estado finalizado */
 }
 
+/* Encabezado y pie de tarjeta: distribución horizontal */
 .card-header, .card-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; /* Elementos a los extremos izquierdo y derecho */
+    align-items: center;            /* Centrado vertical */
 }
 
 .card-header {
-    margin-bottom: 1rem;
+    margin-bottom: 1rem; /* Separación entre header y cuerpo de la tarjeta */
 }
 
 .process-id {
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.2rem;  /* Tamaño para el identificador del proceso */
+    font-weight: 600;   /* Negrita para destacar */
 }
 
 .status-badge {
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
+    padding: 0.3rem 0.8rem; /* Pequeño badge con padding */
+    border-radius: 20px;    /* Forma pill para el badge */
     font-size: 0.8rem;
     font-weight: 600;
 }
 
-.status-info { display: flex; align-items: center; gap: 1.5rem; font-size: 0.9rem; color: #D0D0FF; }
-.cpu-time { font-weight: 600; }
+.status-info { 
+    display: flex; 
+    align-items: center; 
+    gap: 1.5rem; 
+    font-size: 0.9rem; 
+    color: #D0D0FF; /* Color de texto secundario para metadatos */
+}
+.cpu-time { font-weight: 600; } /* Destaca el tiempo de CPU */
 
+/* Barra de progreso: contenedor y barra interna */
 .progress-bar-container {
     width: 100%;
     height: 12px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.2); /* Fondo de la pista de la barra */
     border-radius: 6px;
-    overflow: hidden;
-    flex-grow: 1;
+    overflow: hidden;                      /* Oculta el exceso de la barra interna */
+    flex-grow: 1;                          /* Permite que la barra ocupe espacio flexible */
 }
 
 .progress-bar {
     height: 100%;
-    width: 0%;
-    background-color: #00F260;
+    width: 0%;                             /* Se controla dinámicamente desde JS */
+    background-color: #00F260;             /* Color por defecto (progreso) */
     border-radius: 6px;
-    transition: width 0.5s ease-out;
+    transition: width 0.5s ease-out;       /* Animación suave al aumentar el ancho */
 }
 
-.progress-bar.blocked { background-color: #FF512F; }
-.progress-bar.finalized { background-color: #4CAF50; }
+/* Variantes visuales de la barra según estado */
+.progress-bar.blocked { background-color: #FF512F; } /* Estado bloqueado: naranja/rojo */
+.progress-bar.finalized { background-color: #4CAF50; } /* Estado finalizado: verde */
 
+/* Texto de porcentaje al lado de la barra */
 .percentage {
     font-size: 0.9rem;
     font-weight: 600;
-    margin: 0 1rem;
+    margin: 0 1rem; /* Separación horizontal respecto a la barra */
 }
 
-/* --- CORRECCIÓN: Contenedor para el menú --- */
+/* -------------------------
+   MENÚ DE ACCIONES (DESPLEGABLE)
+   -------------------------*/
+/* Contenedor relativo que sirve como referencia para posicionar el menú */
 .action-menu-container {
     position: relative;
 }
 
 .action-menu-btn {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.2); /* Botón circular semi-transparente */
     color: white;
     border: none;
     border-radius: 50%;
@@ -173,18 +198,21 @@ header h1 {
     cursor: not-allowed;
 }
 
+/* Panel desplegable: por defecto oculto. Se muestra toggling vía JS */
 .action-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 40px;
-    background: #2C2C4A;
+    display: none;               /* Oculto hasta que JS lo muestre */
+    position: absolute;          /* Posicionado respecto a action-menu-container */
+    right: 0;                    /* Alineado al borde derecho del contenedor */
+    top: 40px;                   /* Justo debajo del botón */
+    background: #2C2C4A;         /* Fondo oscuro para contraste */
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    z-index: 101; /* Debe ser mayor que el z-index de la tarjeta activa */
+    z-index: 101;                /* Debe estar por encima de .process-card.is-active (z-index:100) */
     overflow: hidden;
-    width: max-content;
+    width: max-content;          /* Ajusta el ancho al contenido */
 }
+
+/* Botones dentro del menú desplegable */
 .action-menu button {
     display: block;
     width: 100%;
@@ -195,40 +223,45 @@ header h1 {
     text-align: left;
     cursor: pointer;
 }
-.action-menu button:hover { background-color: #4A00E0; }
+.action-menu button:hover { background-color: #4A00E0; } /* Hover visual */
 .action-menu button:disabled { color: #666; background: #333; cursor: not-allowed; }
 
-/* Modal Styles */
+/* -------------------------
+   MODAL (GRÁFICA / GANTT)
+   -------------------------*/
 .modal-overlay {
-    position: fixed;
+    position: fixed;           /* Fija el modal sobre toda la ventana */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    background: rgba(0, 0, 0, 0.7); /* Capa semitransparente detrás del modal */
+    backdrop-filter: blur(5px);     /* Difumina el fondo para foco en modal */
+    display: none;                  /* Oculto hasta toggling por JS */
+    justify-content: center;        /* Centra el contenido horizontalmente */
+    align-items: center;            /* Centra el contenido verticalmente */
+    z-index: 1000;                  /* Muy por encima del resto de elementos */
 }
+
 .modal-content {
-    background: #fdfdff;
+    background: #fdfdff;            /* Fondo claro para la zona de contenido */
     padding: 2rem;
     border-radius: 15px;
     width: 90%;
     max-width: 1200px;
-    height: 90vh;
+    height: 90vh;                   /* Ocupa 90% de la altura de la ventana */
     position: relative;
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
     display: flex;
-    flex-direction: column;
+    flex-direction: column;         /* Contenido apilado verticalmente */
 }
+
 .modal-content h2 {
     color: #333;
     text-align: center;
     margin-bottom: 1rem;
 }
+
 .close-btn {
     position: absolute;
     top: 15px;
@@ -236,16 +269,19 @@ header h1 {
     background: none;
     border: none;
     color: #888;
-    font-size: 2rem;
+    font-size: 2rem; /* Botón grande y accesible para cerrar */
     cursor: pointer;
     transition: color 0.2s;
 }
 .close-btn:hover { color: #333; }
 
+/* Canvas del Gantt: se adapta al tamaño del modal */
 #gantt-chart { 
     width: 100%;
     height: 100%;
 }
+
+/* Leyenda de la gráfica */
 .legend { 
     margin-top: 1rem; 
     display: flex; 

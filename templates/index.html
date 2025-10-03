@@ -1,44 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador de Procesos Web</title>
+    <!-- Configuración básica de la página -->
+    <meta charset="UTF-8"> <!-- Codificación de caracteres -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajuste para dispositivos móviles -->
+    <title>Visualizador de Procesos Web</title> <!-- Título de la pestaña -->
+
+    <!-- Enlace a hoja de estilos local -->
     <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- Conexión previa a Google Fonts para optimizar la carga -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Fuente Poppins en varios grosores -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
 
+<body>
+    <!-- Contenedor principal -->
     <div class="main-container">
         <header>
+            <!-- Título principal -->
             <h1>Visualizador de Procesos</h1>
+
+            <!-- Controles principales -->
             <div class="main-controls">
+                <!-- Botón para agregar un nuevo proceso -->
                 <button id="add-process-btn" class="control-btn add-btn">+ Agregar Proceso</button>
+
+                <!-- Botón para mostrar la gráfica -->
                 <button id="show-chart-btn" class="control-btn chart-btn">📊 Ver Gráfica</button>
+
+                <!-- Botón para reiniciar la simulación (oculto por defecto) -->
                 <button id="reset-btn" class="control-btn reset-btn" style="display: none;">🔄 Reiniciar Simulación</button>
             </div>
-            <!-- CORRECCIÓN: Eliminado el panel de botones que no funcionaban, dejando solo el que sí -->
+            
+            <!-- Controles globales -->
             <div class="global-controls">
+                <!-- Botón para iniciar todos los procesos -->
                 <button id="start-all-btn" class="global-btn start">▶ Iniciar Todos</button>
             </div>
         </header>
 
+        <!-- Contenedor dinámico donde se mostrarán los procesos -->
         <main id="process-container">
         </main>
     </div>
 
+    <!-- Modal para la gráfica de procesos -->
     <div id="chart-modal" class="modal-overlay">
         <div class="modal-content">
+            <!-- Botón para cerrar el modal -->
             <button id="close-modal-btn" class="close-btn">&times;</button>
+
+            <!-- Título de la gráfica -->
             <h2>Gráfica de Comportamiento de Procesos</h2>
+
+            <!-- Lienzo de la gráfica -->
             <canvas id="gantt-chart"></canvas>
+
+            <!-- Leyenda para los procesos -->
             <div id="chart-legend" class="legend"></div>
         </div>
     </div>
 
+    <!-- Librería Socket.IO para comunicación en tiempo real -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+
+    <!-- Script principal de la aplicación -->
     <script src="/static/js/main.js"></script>
 </body>
 </html>
