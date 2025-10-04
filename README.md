@@ -1,15 +1,21 @@
 # Visualizador de Estados de Procesos Web
 
+
 <p align="center">
-  <img width="1200" alt="Banner del Proyecto" src="https://user-images.githubusercontent.com/75911106/mini-proyecto-banner.png" />
+  <img width="2000" height="600" alt="Docs Banner Overview del Proyecto Minimalista Azul (1)" src="https://github.com/user-attachments/assets/3e5a8940-2a3d-40fc-9648-ead00ea61ac4" />
+
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/estado-TERMINADO-brightgreen?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Última%20modificación-octubre%202025-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Lenguaje-JavaScript-yellow?style=for-the-badge&logo=javascript&logoColor=black" />
-  <img src="https://img.shields.io/badge/Proyecto-Web-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/JavaScript-yellow?style=for-the-badge&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/Python-green?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/CSS-blue?style=for-the-badge&logo=css3&logoColor=white" />
+  <img src="https://img.shields.io/badge/HTML-orange?style=for-the-badge&logo=html5&logoColor=white" />
+  <img src="https://img.shields.io/badge/ Mini Proyecto 1-purple?style=for-the-badge" />
 </p>
+
 
 ---
 
@@ -45,21 +51,31 @@ Este proyecto implementa una plataforma web para simular y visualizar el estado 
 
 - HTML5 y CSS3  
 - JavaScript  
-- Socket.IO para comunicación en tiempo real  
-- Canvas API para la gráfica Gantt  
+- Python  
+- Canvas API   
 
 ---
 
 ## Requisitos y compatibilidad
-
-- Navegador moderno (Chrome, Edge, Firefox, Safari)  
-- Conexión a Internet para acceder al host gratuito  
-- Servidor backend con soporte de Socket.IO (ya incluido en el proyecto)  
-
+- Navegador   
+- Conexión a Internet
+  
 ---
 
 ## Estructura del proyecto
-
+```
+📦 raiz/
+┣ 📂 static/
+┃ ┣ 📂 css/
+┃ ┃ ┗ 📄 style.css
+┃ ┣ 📂 js/
+┃ ┃ ┗ 📄 main.js
+┣ 📂 templates/
+┃ ┗ 📄 index.html
+┣ 📄 app.py
+┣ 📄 logic.py
+┗ 📄 README.md
+```
 
 ---
 
@@ -76,7 +92,7 @@ Este proyecto implementa una plataforma web para simular y visualizar el estado 
 - **Gráfica Gantt**: se recomienda activarla al finalizar todos los procesos para una mejor visualización.
 
 3. Para ver un video demostrativo de la aplicación:  
-[Video de demostración](URL_DEL_VIDEO)  
+[Video de demostración](https://youtu.be/U_w-Yg7u1rM)  
 
 ---
 
